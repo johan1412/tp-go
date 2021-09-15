@@ -1,3 +1,3 @@
-module tp-inter
+module tp-go/miniapi
 
 go 1.17

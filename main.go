@@ -12,8 +12,9 @@ func currentTime(w http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 		case http.MethodGet:
 			now := time.Now()
-			heure := now.Format("15:04")
-			fmt.Fprintf(w, heure)
+			heure := now.Format("15")
+			minutes := now.Format("04")
+			fmt.Fprintf(w, heure + "h" + minutes)
 		case http.MethodPost:
 			fmt.Fprintf(w, "Bad method")
 	}
@@ -36,7 +37,7 @@ func save(w http.ResponseWriter, req *http.Request) {
 
 			writter := bufio.NewWriter(saveFile)
 			if err == nil {
-				fmt.Fprintf(writter, "%s:%s\n", author, entry)
+				fmt.Fprintf(writter, "%s\n", entry)
 			}
 			writter.Flush()
 
@@ -47,9 +48,12 @@ func save(w http.ResponseWriter, req *http.Request) {
 func entries(w http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 		case http.MethodGet:
-			
+			saveData, err := os.ReadFile("./entries.data")
+			if err == nil {
+				fmt.Fprintf(w, string(saveData))
+			}
 		case http.MethodPost:
-		
+			fmt.Fprintf(w, "bad request")
 	}
 }
 
